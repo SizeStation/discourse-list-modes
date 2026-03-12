@@ -1,0 +1,7 @@
+en:
+  js:
+    discourse_list_modes:
+      select_mode: "List Mode"
+      normal: "Normal Mode"
+      images: "Images Mode"
+      gallery: "Gallery Mode"

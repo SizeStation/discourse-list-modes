@@ -1,0 +1,25 @@
+plugins:
+  list_modes_enabled:
+    default: true
+    client: true
+  list_modes_normal_default_categories:
+    default: ""
+    type: category_list
+    client: true
+  list_modes_images_default_categories:
+    default: ""
+    type: category_list
+    client: true
+  list_modes_gallery_default_categories:
+    default: ""
+    type: category_list
+    client: true
+  list_modes_normal_selectable:
+    default: true
+    client: true
+  list_modes_images_selectable:
+    default: true
+    client: true
+  list_modes_gallery_selectable:
+    default: true
+    client: true

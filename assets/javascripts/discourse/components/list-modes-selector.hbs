@@ -1,0 +1,10 @@
+{{#if this.listModes.showSelector}}
+  <div class="list-modes-selector">
+    <ComboBox
+      @content={{this.availableModes}}
+      @value={{this.listModes.currentMode}}
+      @onChange={{this.onChange}}
+      @options={{hash none="discourse_list_modes.select_mode"}}
+    />
+  </div>
+{{/if}}

@@ -10,13 +10,11 @@ module ::DiscourseListModes
       mode = params.require(:mode).to_s
 
       # Validate mode
-      unless %w[normal images gallery].include?(mode)
-        raise Discourse::InvalidParameters.new(:mode)
-      end
+      raise Discourse::InvalidParameters.new(:mode) unless %w[normal images gallery].include?(mode)
 
       # Load or initialize preferences
       preferences = current_user.custom_fields["list_modes_preferences"] || {}
-      
+
       # Update for the specific category
       preferences[category_id.to_s] = mode
 

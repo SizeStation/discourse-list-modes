@@ -18,7 +18,10 @@ export default class ListModesService extends Service {
       modes.push({ id: "images", name: I18n.t("discourse_list_modes.images") });
     }
     if (this.siteSettings.list_modes_gallery_selectable) {
-      modes.push({ id: "gallery", name: I18n.t("discourse_list_modes.gallery") });
+      modes.push({
+        id: "gallery",
+        name: I18n.t("discourse_list_modes.gallery"),
+      });
     }
     return modes;
   }
@@ -41,10 +44,16 @@ export default class ListModesService extends Service {
     }
 
     // 2. Fallback to site setting
-    if (this.isCategoryDefault("images", catId) && this.isSelectable("images")) {
+    if (
+      this.isCategoryDefault("images", catId) &&
+      this.isSelectable("images")
+    ) {
       return "images";
     }
-    if (this.isCategoryDefault("gallery", catId) && this.isSelectable("gallery")) {
+    if (
+      this.isCategoryDefault("gallery", catId) &&
+      this.isSelectable("gallery")
+    ) {
       return "gallery";
     }
 
@@ -53,7 +62,8 @@ export default class ListModesService extends Service {
   }
 
   isCategoryDefault(mode, categoryId) {
-    const defaultSetting = this.siteSettings[`list_modes_${mode}_default_categories`];
+    const defaultSetting =
+      this.siteSettings[`list_modes_${mode}_default_categories`];
     if (!defaultSetting) return false;
     const catArray = defaultSetting.split("|");
     return catArray.includes(categoryId.toString());
@@ -77,7 +87,9 @@ export default class ListModesService extends Service {
       if (!this.currentUser.list_modes_preferences) {
         this.currentUser.list_modes_preferences = {};
       }
-      this.currentUser.list_modes_preferences[this.currentCategoryId.toString()] = mode;
+      this.currentUser.list_modes_preferences[
+        this.currentCategoryId.toString()
+      ] = mode;
 
       ajax("/list-modes/preferences", {
         type: "POST",

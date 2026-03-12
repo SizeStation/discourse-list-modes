@@ -12,19 +12,32 @@ export default {
         // We need to check if we are in a category
         const router = container.lookup("service:router");
         const currentRoute = router.currentRoute;
-        
+
         let category = null;
-        if (currentRoute && currentRoute.attributes && currentRoute.attributes.category) {
+        if (
+          currentRoute &&
+          currentRoute.attributes &&
+          currentRoute.attributes.category
+        ) {
           category = currentRoute.attributes.category;
-        } else if (currentRoute && currentRoute.parent && currentRoute.parent.attributes && currentRoute.parent.attributes.category) {
+        } else if (
+          currentRoute &&
+          currentRoute.parent &&
+          currentRoute.parent.attributes &&
+          currentRoute.parent.attributes.category
+        ) {
           category = currentRoute.parent.attributes.category;
         }
 
         listModes.updateCategory(category);
-        
+
         // Update document body class based on mode
-        document.body.classList.remove("list-mode-normal", "list-mode-images", "list-mode-gallery");
-        
+        document.body.classList.remove(
+          "list-mode-normal",
+          "list-mode-images",
+          "list-mode-gallery"
+        );
+
         if (category) {
           document.body.classList.add(`list-mode-${listModes.currentMode}`);
         }

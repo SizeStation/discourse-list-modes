@@ -23,10 +23,12 @@ export default {
         _renderImages() {
           schedule("afterRender", () => {
             if (this.isDestroying || this.isDestroyed || !this.element) return;
-            
+
             // Only render thumbnails if in images mode
             if (this.listModes.currentMode !== "images") {
-              const existing = this.element.querySelector(".list-mode-thumbnails");
+              const existing = this.element.querySelector(
+                ".list-mode-thumbnails"
+              );
               if (existing) existing.remove();
               return;
             }
@@ -40,7 +42,7 @@ export default {
             const maxImages = 4;
             const container = document.createElement("div");
             container.className = "list-mode-thumbnails";
-            
+
             for (let i = 0; i < Math.min(images.length, maxImages); i++) {
               if (i === maxImages - 1 && images.length > maxImages) {
                 const moreCount = images.length - maxImages + 1;
@@ -59,7 +61,7 @@ export default {
 
             this.element.appendChild(container);
           });
-        }
+        },
       });
     });
   },

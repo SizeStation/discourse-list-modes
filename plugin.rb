@@ -24,7 +24,11 @@ after_initialize do
     object.custom_fields["list_modes_preferences"] || {}
   end
 
-  add_to_serializer(:topic_list_item, :list_modes_images, include_condition: -> { scope.is_admin? || true }) do
+  add_to_serializer(
+    :topic_list_item,
+    :list_modes_images,
+    include_condition: -> { scope.is_admin? || true },
+  ) do
     # Ensure we include images. object is a Topic
     # We grab the image_url or thumbnails
     if object.image_url.present?

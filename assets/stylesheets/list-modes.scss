@@ -6,7 +6,8 @@
 
 // ----- IMAGES MODE -----
 body.list-mode-images {
-  .topic-list-item {
+  .topic-list-item,
+  .topic-list-body .topic-list-item {
     position: relative;
 
     .main-link {
@@ -48,10 +49,18 @@ body.list-mode-images {
 // ----- GALLERY MODE -----
 body.list-mode-gallery {
   .topic-list {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    display: grid !important;
     gap: 16px;
     border: none;
+
+    // Standard table layout
+    & > tbody,
+    .topic-list-body {
+      display: contents;
+    }
+
+    // Direct children if Horizon removes tbody
+    grid-template-columns: repeat(1, 1fr);
 
     @media screen and (width >= 768px) {
       grid-template-columns: repeat(2, 1fr);
@@ -62,15 +71,11 @@ body.list-mode-gallery {
     }
 
     thead {
-      display: none; // Hide table header
-    }
-
-    tbody {
-      display: contents;
+      display: none !important; // Hide table header
     }
 
     .topic-list-item {
-      display: flex;
+      display: flex !important;
       flex-direction: column;
       position: relative;
       aspect-ratio: 1 / 1;
@@ -79,11 +84,16 @@ body.list-mode-gallery {
       overflow: hidden;
       background-size: cover;
       background-position: center;
+      width: 100%;
+      height: auto;
+      margin: 0 !important;
 
       // Make all table cells stack nicely or position absolutely
-      td {
-        border: none;
-        padding: 0;
+      td,
+      .topic-list-data {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
       }
 
       .main-link {
@@ -101,7 +111,7 @@ body.list-mode-gallery {
         padding: 16px;
 
         .title {
-          color: white;
+          color: white !important;
           font-size: 1.25em;
           font-weight: bold;
           text-shadow: 1px 1px 3px rgb(0, 0, 0, 0.8);
@@ -121,7 +131,7 @@ body.list-mode-gallery {
       .activity {
         position: absolute;
         z-index: 3;
-        color: white;
+        color: white !important;
         text-shadow: 1px 1px 2px rgb(0, 0, 0, 0.8);
         bottom: 16px;
       }

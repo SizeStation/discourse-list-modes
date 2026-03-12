@@ -6,7 +6,7 @@ export default {
   name: "list-modes-topic-list-images-dom",
   initialize() {
     withPluginApi("0.8", (api) => {
-      api.modifyClass("component:topic-list-item", {
+      const modifier = {
         pluginId: "discourse-list-modes",
         listModes: service("list-modes"),
 
@@ -62,7 +62,10 @@ export default {
             this.element.appendChild(container);
           });
         },
-      });
+      };
+
+      api.modifyClass("component:topic-list-item", modifier);
+      api.modifyClass("component:topic-list-card", modifier);
     });
   },
 };

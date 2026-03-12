@@ -39,3 +39,5 @@ after_initialize do
     end
   end
 end
+
+Discourse::Application.routes.append { mount ::DiscourseListModes::Engine, at: "/list-modes" }

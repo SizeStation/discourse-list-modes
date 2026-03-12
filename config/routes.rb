@@ -3,5 +3,3 @@
 require_dependency "discourse_list_modes/engine"
 
 DiscourseListModes::Engine.routes.draw { post "/preferences" => "preferences#update" }
-
-Discourse::Application.routes.append { mount ::DiscourseListModes::Engine, at: "/list-modes" }

@@ -1,7 +1,16 @@
 en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          list_modes: "List Modes"
+        list_modes_enabled: "Enable extra list modes (thumbnails, gallery)"
+        list_modes_thumbnails_categories: "Categories to use thumbnails mode by default (comma separated IDs)"
+        list_modes_gallery_categories: "Categories to use gallery mode by default (comma separated IDs)"
   js:
-    discourse_list_modes:
-      select_mode: "List Mode"
-      normal: "Normal Mode"
-      images: "Images Mode"
-      gallery: "Gallery Mode"
+    list_modes:
+      mode: "Mode"
+      regular: "Regular"
+      thumbnails: "Thumbnails"
+      gallery: "Gallery"
+      more: "+%{count} more"

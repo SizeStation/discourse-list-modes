@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
-require_dependency "discourse_list_modes/engine"
+MyPluginModule::Engine.routes.draw do
+  get "/examples" => "examples#index"
+  # define routes here
+end
 
-DiscourseListModes::Engine.routes.draw { post "/preferences" => "preferences#update" }
+Discourse::Application.routes.draw { mount ::MyPluginModule::Engine, at: "my-plugin" }

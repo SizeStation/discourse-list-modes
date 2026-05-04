@@ -1,3 +1,5 @@
-# discourse-list-modes
+# **Plugin Name** Plugin
 
-A Discourse plugin that adds three different post list modes.
+**Plugin Summary**
+
+For more information, please see: **url to meta topic**

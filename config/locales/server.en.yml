@@ -1,9 +1,1 @@
 en:
-  site_settings:
-    list_modes_enabled: "Enable the Discourse List Modes plugin"
-    list_modes_normal_default_categories: "Categories that default to Normal mode"
-    list_modes_images_default_categories: "Categories that default to Images mode"
-    list_modes_gallery_default_categories: "Categories that default to Gallery mode"
-    list_modes_normal_selectable: "Let users select the Normal mode"
-    list_modes_images_selectable: "Let users select the Images mode"
-    list_modes_gallery_selectable: "Let users select the Gallery mode"

@@ -1,0 +1,21 @@
+<div class="topic-list-mode-thumbnails">
+  {{#if this.shouldShow}}
+    <div class="thumbnails-container">
+      {{#each this.displayThumbnails as |thumb|}}
+        <div class="thumbnail-item {{if thumb.isMore 'more-indicator'}}">
+          {{#if thumb.isMore}}
+            <span class="more-text">{{thumb.count}}</span>
+          {{else}}
+            <img src={{thumb.url}} alt="" />
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if this.shouldShowGallery}}
+    <div class="gallery-image-container">
+      <img src={{this.firstImage}} alt="" class="gallery-main-image" />
+    </div>
+  {{/if}}
+</div>

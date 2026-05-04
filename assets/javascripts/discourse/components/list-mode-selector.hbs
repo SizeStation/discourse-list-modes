@@ -1,0 +1,11 @@
+{{#if this.shouldShow}}
+  <div class="list-mode-selector-container">
+    <ComboBox
+      @value={{this.currentMode}}
+      @content={{this.modes}}
+      @onChange={{this.changeMode}}
+      @options={{hash icon="th-list"}}
+      class="list-mode-selector"
+    />
+  </div>
+{{/if}}

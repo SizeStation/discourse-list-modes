@@ -16,19 +16,38 @@ end
 register_asset "stylesheets/discourse-list-modes.scss"
 
 after_initialize do
-  add_to_serializer(:topic_list_item, :thumbnails) do
-    return [] unless SiteSetting.list_modes_enabled
-    
-    # Get images from the first post
-    post = object.first_post
-    return [] unless post
+  [:basic_topic, :topic_list_item].each do |s|
+    add_to_serializer(s, :thumbnails) do
+      return [] unless SiteSetting.list_modes_enabled
+      
+      # 1. Get images from first post
+      cooked = Post.where(topic_id: object.id, post_number: 1).pluck(:cooked).first
+      images = []
+      if cooked.present?
+        doc = Nokogiri::HTML.fragment(cooked)
+        images = doc.css("img").map { |img| img["src"] }.reject do |src| 
+          src.include?("/images/emoji/") || src.include?("/images/avatar/") || src.blank?
+        end
+      end
+      
+      # 2. Add topic image_url as fallback/first
+      images.unshift(object.image_url) if object.image_url.present?
 
-    # Extract image URLs from cooked content
-    # We want up to 4 images
-    doc = Nokogiri::HTML5.fragment(post.cooked)
-    images = doc.css("img").map { |img| img["src"] }.reject { |src| src.include?("/images/emoji/") }
-    
-    images.uniq.take(5) # Take up to 5 to handle the "+x" logic more easily on frontend
+      # 3. Normalize all to absolute and deduplicate by canonical path
+      images.map! do |url|
+        if url.start_with?("http") || url.start_with?("//")
+          url
+        else
+          "#{Discourse.base_url}#{url.start_with?("/") ? "" : "/"}#{url}"
+        end
+      end
+
+      images.uniq! do |url| 
+        sha = url.match(/([a-f0-9]{40})/)
+        sha ? sha[1] : url.split("?").first.gsub(/^https?:/, "")
+      end
+      images.take(5)
+    end
   end
 
   # Allow users to save their category preference

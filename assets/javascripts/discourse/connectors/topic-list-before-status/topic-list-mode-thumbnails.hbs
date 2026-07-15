@@ -1,0 +1,16 @@
+{{#if this.showPosterAvatar}}
+  <span class="list-mode-poster-avatar">
+    <a
+      href="{{this.posterUser.path}}"
+      data-user-card="{{this.posterUser.username}}"
+    >{{avatar this.posterUser imageSize="small"}}</a>
+  </span>
+{{/if}}
+{{#if this.showGalleryBg}}
+  <img
+    src={{this.firstImage}}
+    class="gallery-image-container"
+    alt=""
+    loading="lazy"
+  />
+{{/if}}

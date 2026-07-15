@@ -1,211 +1,587 @@
-// Discourse List Modes Styles
-
-$premium-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-$premium-radius: 16px;
-$glass-bg: rgba(255, 255, 255, 0.85);
-$glass-blur: 12px;
-
-:root {
-  --gallery-columns: 3;
-}
-
-@media screen and (max-width: 600px) { :root { --gallery-columns: 1; } }
-@media screen and (min-width: 601px) and (max-width: 1000px) { :root { --gallery-columns: 2; } }
-@media screen and (min-width: 1001px) and (max-width: 1400px) { :root { --gallery-columns: 3; } }
-@media screen and (min-width: 1401px) { :root { --gallery-columns: 4; } }
-
-.list-mode-selector-container {
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-
-  .list-mode-selector {
-    .select-kit-header {
-      border-radius: 20px;
-      padding: 4px 12px;
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      transition: all 0.2s;
-
-      &:hover {
-        background: #e9ecef;
-      }
-      
-      .d-icon {
-        color: #6c757d;
-      }
-    }
-  }
-}
-
-// Thumbnails Mode
-.list-mode-thumbnails {
-  .topic-list-item {
-    display: flex !important;
-    align-items: center !important;
-    flex-wrap: nowrap !important;
-    padding: 10px 15px;
-
-    .main-link {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .topic-list-data {
-      padding: 0 !important;
-      border: none !important;
-      display: flex;
-      align-items: center;
-      
-      &.posters, &.posts, &.views, &.activity {
-        flex: 0 0 auto;
-        margin-left: 15px;
-        width: 60px;
-        justify-content: center;
-      }
-    }
-
-    .topic-list-mode-thumbnails {
-      order: 10; // Put at the end
-      margin-left: 20px;
-
-      .thumbnails-container {
-        display: flex;
-        gap: 6px;
-
-        .thumbnail-item {
-          width: 50px;
-          height: 50px;
-          border-radius: 8px;
-          overflow: hidden;
-          background: #f0f0f0;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-
-          &.more-indicator {
-            background: #222;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75em;
-            font-weight: bold;
-          }
-        }
-      }
-    }
-  }
-
-  // Hide headers that don't make sense in flex mode or just keep them
-  .topic-list thead {
-    // maybe hide or adjust
-  }
-}
-
-// Gallery Mode
-.list-mode-gallery {
+// ==========================================
+// Regular Mode - XenForo-style Table
+// Overrides the Horizon theme's card layout
+// ==========================================
+body.list-mode-regular {
   .topic-list {
-    display: grid !important;
-    grid-template-columns: repeat(var(--gallery-columns), 1fr);
-    gap: 24px;
-    border: none !important;
-    padding: 20px 0;
+    all: revert;
+    display: table !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    table-layout: auto !important;
 
-    thead { display: none; }
-    tbody { display: contents; }
+    thead {
+      all: revert;
+      display: table-header-group !important;
+    }
 
-    .topic-list-item {
-      display: flex;
-      flex-direction: column;
-      height: 380px;
-      position: relative;
-      background: white;
-      border: 1px solid rgba(0,0,0,0.05);
-      border-radius: $premium-radius;
-      overflow: hidden;
-      box-shadow: $premium-shadow;
-      transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-      margin: 0 !important;
+    tbody {
+      all: revert;
+      display: table-row-group !important;
+    }
 
-      &:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-        
-        .main-link {
-          background: white;
+    .bulk-select {
+      display: none !important;
+    }
+
+    // Header
+    .topic-list-header tr {
+      display: table-row !important;
+
+      th {
+        all: revert;
+        display: table-cell !important;
+        padding: 12px 14px !important;
+        font-size: 0.78em !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.06em !important;
+        color: var(--primary-medium) !important;
+        border-bottom: 2px solid var(--primary-low-mid) !important;
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        background: transparent !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        box-shadow: none !important;
+
+        a {
+          color: var(--primary-medium) !important;
         }
       }
 
-      .topic-list-data {
-        padding: 0 !important;
-        border: none !important;
-        display: block;
-        width: 100%;
+      th.main-link {
+        width: auto !important;
       }
 
-      .main-link {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
-        background: $glass-bg;
-        backdrop-filter: blur($glass-blur);
-        padding: 16px;
-        margin: 0;
-        border-top: 1px solid rgba(0,0,0,0.05);
-        transition: background 0.3s;
+      th.last-reply {
+        width: 140px !important;
+      }
+
+      th.likes,
+      th.replies,
+      th.views {
+        width: 72px !important;
+        text-align: center !important;
+      }
+    }
+
+    // Data rows
+    .topic-list-item {
+      all: revert;
+      display: table-row !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      position: static !important;
+
+      &.--high-context,
+      &.--has-replies,
+      &.--has-status-card {
+        all: revert;
+        display: table-row !important;
+      }
+
+      td {
+        all: revert;
+        display: table-cell !important;
+        padding: 14px !important;
+        border-bottom: 1px solid var(--primary-low) !important;
+        border-top: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        vertical-align: middle !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        position: static !important;
+      }
+
+      // ===== Topic Column =====
+      td.main-link {
+        padding: 14px !important;
+
+        .list-mode-poster-avatar {
+          all: revert;
+          float: left !important;
+          margin-right: 12px !important;
+          position: static !important;
+
+          .avatar {
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50% !important;
+          }
+        }
 
         .link-top-line {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
+          all: revert;
+          display: block !important;
+          overflow: hidden !important;
+          flex-direction: unset !important;
+          gap: unset !important;
+
+          .topic-statuses {
+            margin-right: 4px !important;
+          }
+
+          a.raw-topic-link {
+            font-size: 1.05em !important;
+            font-weight: 600 !important;
+            color: var(--primary) !important;
+            line-height: 1.4 !important;
+            text-shadow: none !important;
+
+            &:visited {
+              color: var(--primary-medium) !important;
+            }
+          }
+
+          .badge-notification {
+            vertical-align: middle !important;
+          }
         }
 
-        .title {
-          font-weight: 700;
-          font-size: 1.1em;
-          color: #222;
-          line-height: 1.3;
+        .link-bottom-line {
+          all: revert;
+          display: block !important;
+          margin-top: 2px !important;
+          font-size: 0 !important;
+          position: static !important;
+
+          a.category-link {
+            display: none !important;
+          }
+
+          .discourse-tags {
+            display: inline-block !important;
+            font-size: 0.72rem !important;
+            margin-top: 2px !important;
+
+            a {
+              color: var(--primary-medium) !important;
+            }
+          }
+
+          .participant-groups {
+            display: none !important;
+          }
+
+          .action-list.likes {
+            display: none !important;
+          }
         }
-        
-        .discourse-tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 4px;
-          margin-top: 5px;
+
+        .topic-post-badges {
+          display: none !important;
+        }
+
+        // Images strip under title
+        .list-mode-images {
+          all: revert;
+          display: flex !important;
+          flex-flow: row wrap !important;
+          gap: 6px !important;
+          margin-top: 8px !important;
+
+          &__item {
+            width: 60px !important;
+            height: 60px !important;
+            border-radius: 6px !important;
+            overflow: hidden !important;
+            flex-shrink: 0 !important;
+            background: var(--primary-low) !important;
+
+            img {
+              width: 100% !important;
+              height: 100% !important;
+              object-fit: cover !important;
+              display: block !important;
+            }
+
+            &--more {
+              background: var(--primary-medium) !important;
+              display: inline-flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              text-align: center !important;
+            }
+          }
+
+          &__more-label {
+            color: var(--secondary) !important;
+            font-size: 0.78em !important;
+            font-weight: 700 !important;
+            line-height: 1.2 !important;
+          }
         }
       }
 
-      .gallery-image-container {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
+      // ===== Last Reply Column =====
+      td.last-reply {
+        all: revert;
+        display: table-cell !important;
+        white-space: nowrap !important;
+        padding: 14px !important;
 
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
+        .last-reply-avatar {
+          display: inline-block !important;
+          margin-right: 6px !important;
+          vertical-align: middle !important;
+
+          .avatar {
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 50% !important;
+          }
+        }
+
+        .last-reply-time {
+          display: inline-block !important;
+          vertical-align: middle !important;
+          font-size: 0.82em !important;
+          color: var(--primary-medium) !important;
         }
       }
 
-      // Hide everything else
-      .posters, .posts, .views, .activity, .num, .topic-list-mode-thumbnails .thumbnails-container {
+      // ===== Numeric Columns =====
+      td.likes,
+      td.replies,
+      td.views {
+        all: revert;
+        display: table-cell !important;
+        text-align: center !important;
+        font-size: 0.9em !important;
+        color: var(--primary-high) !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        padding: 14px !important;
+
+        a {
+          color: var(--primary-high) !important;
+          font-weight: 500 !important;
+        }
+      }
+
+      td.likes a {
+        color: var(--love) !important;
+      }
+
+      td.views {
+        color: var(--primary-medium) !important;
+      }
+    }
+
+    // Row hover
+    .topic-list-item:hover td {
+      background: var(--primary-very-low) !important;
+    }
+  }
+
+  // Responsive: collapse columns on small screens
+  @media (width <= 700px) {
+    .topic-list {
+      th.last-reply,
+      td.last-reply {
+        display: none !important;
+      }
+
+      th.likes,
+      td.likes {
         display: none !important;
       }
     }
   }
 }
 
-// Ensure Horizon theme compatibility
-.horizon-theme {
-  // specific overrides if needed
+// ==========================================
+// Gallery Mode - Square Card Grid
+// Items flow left-to-right, top-to-bottom
+// ==========================================
+// Use html prefix for maximum specificity against theme overrides
+html body.list-mode-gallery {
+  // Reset list body padding from theme (e.g. Horizon adds padding-top)
+  #list-area .topic-list-body {
+    padding-top: 0 !important;
+  }
+
+  .topic-list {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    border: none !important;
+    padding: 20px 0 !important;
+    width: 100% !important;
+
+    thead {
+      display: none !important;
+    }
+
+    tbody {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      gap: 20px !important;
+      width: 100% !important;
+    }
+
+    .topic-list-item {
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 1 1 calc(33.333% - 20px) !important;
+      min-width: 280px !important;
+      max-width: calc(33.333% - 20px) !important;
+      position: relative !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+      background: var(--primary-low) !important;
+      aspect-ratio: 1 / 1 !important;
+      border: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      height: auto !important;
+
+      &.--high-context,
+      &.--has-replies,
+      &.--has-status-card {
+        display: flex !important;
+      }
+
+      @media (width <= 700px) {
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      @media (width >= 701px) and (width <= 1100px) {
+        flex: 1 1 calc(50% - 20px) !important;
+        max-width: calc(50% - 20px) !important;
+        min-width: 0 !important;
+      }
+
+      // Hide ALL column cells — only main-link is re-shown
+      td {
+        display: none !important;
+      }
+
+      // Main link uses a single-cell CSS Grid for z-index layering.
+      // Gallery-only class names — no sharing with regular mode.
+      td.main-link {
+        display: grid !important;
+        grid-template-rows: 1fr !important;
+        flex: 1 1 auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+        background: none !important;
+        min-height: 0 !important;
+        min-width: 0 !important;
+
+        // Hide core title (we replace it with our own overlay)
+        .link-top-line {
+          display: none !important;
+        }
+
+        .link-bottom-line {
+          display: none !important;
+        }
+
+        .topic-post-badges {
+          display: none !important;
+        }
+
+        .list-mode-poster-avatar {
+          display: none !important;
+        }
+
+        .list-mode-images {
+          display: none !important;
+        }
+
+        // Bottom layer — image fills entire cell
+        .gallery-image-container {
+          grid-row: 1 !important;
+          grid-column: 1 !important;
+          z-index: 0 !important;
+          overflow: hidden !important;
+
+          img {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+          }
+        }
+
+        // Top layer — self-contained content overlay
+        .gallery-content-wrap {
+          grid-row: 1 !important;
+          grid-column: 1 !important;
+          z-index: 1 !important;
+          align-self: end !important;
+          display: flex !important;
+          flex-direction: column !important;
+
+          &__title {
+            padding: 60px 16px 8px !important;
+            background: linear-gradient(
+              transparent 0%,
+              rgb(0 0 0 / 0.75) 40%
+            ) !important;
+          }
+
+          &__link {
+            color: #fff !important;
+            font-weight: 700 !important;
+            font-size: 1em !important;
+            line-height: 1.3 !important;
+            text-shadow: 0 1px 3px rgb(0 0 0 / 0.3) !important;
+          }
+
+          &__extras {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            padding: 8px 16px 14px !important;
+          }
+
+          &__avatar .avatar {
+            width: 24px !important;
+            height: 24px !important;
+            border-radius: 50% !important;
+            border: 2px solid rgb(255 255 255 / 0.4) !important;
+          }
+
+          &__likes,
+          &__replies {
+            font-size: 0.78em !important;
+            color: rgb(255 255 255 / 0.9) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+
+            .d-icon {
+              font-size: 0.85em !important;
+            }
+          }
+        }
+      }
+
+      // Main link — single-cell CSS Grid for z-index layering.
+      // ALL children explicitly share grid-area: 1 / 1 so they stack in the same
+      // cell regardless of auto-placement rules.
+      td.main-link {
+        display: grid !important;
+        grid-template: 1fr / 1fr !important;
+        flex: 1 1 auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+        background: none !important;
+        min-height: 0 !important;
+        min-width: 0 !important;
+
+        // Image fills the full cell, behind content
+        .gallery-image-container {
+          position: relative !important;
+          grid-area: 1 / 1 !important;
+          z-index: 0 !important;
+          overflow: hidden !important;
+
+          img {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+          }
+        }
+
+        // Title — sits above the image, pinned to bottom
+        .link-top-line {
+          position: relative !important;
+          grid-area: 1 / 1 !important;
+          z-index: 1 !important;
+          align-self: end !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 2px !important;
+          padding: 60px 16px 0 !important;
+          background: linear-gradient(
+            transparent 0%,
+            rgb(0 0 0 / 0.75) 40%
+          ) !important;
+
+          a.raw-topic-link {
+            color: #fff !important;
+            font-weight: 700 !important;
+            font-size: 1em !important;
+            line-height: 1.3 !important;
+            text-shadow: 0 1px 3px rgb(0 0 0 / 0.3) !important;
+          }
+        }
+
+        .link-bottom-line {
+          display: none !important;
+        }
+
+        .topic-post-badges {
+          display: none !important;
+        }
+
+        .list-mode-poster-avatar {
+          display: none !important;
+        }
+
+        // Extras — sits above the title at the bottom
+        .gallery-overlay-extras {
+          position: relative !important;
+          grid-area: 1 / 1 !important;
+          z-index: 1 !important;
+          align-self: end !important;
+          display: flex !important;
+          align-items: center !important;
+          gap: 14px !important;
+          padding: 8px 16px 14px !important;
+
+          .gallery-overlay-avatar .avatar {
+            width: 24px !important;
+            height: 24px !important;
+            border-radius: 50% !important;
+            border: 2px solid rgb(255 255 255 / 0.4) !important;
+          }
+
+          .gallery-overlay-likes,
+          .gallery-overlay-replies {
+            font-size: 0.78em !important;
+            color: rgb(255 255 255 / 0.9) !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+
+            .d-icon {
+              font-size: 0.85em !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ==========================================
+// Mode Selector
+// ==========================================
+.list-mode-selector-container {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
 }

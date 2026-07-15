@@ -1,54 +1,84 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import { action } from "@ember/object";
+import ItemTopicCell from "discourse/components/topic-list/item/topic-cell";
+import HeaderTopicCell from "discourse/components/topic-list/header/topic-cell";
+import ItemLikesCell from "discourse/components/topic-list/item/likes-cell";
+import HeaderLikesCell from "discourse/components/topic-list/header/likes-cell";
+import ItemRepliesCell from "discourse/components/topic-list/item/replies-cell";
+import HeaderRepliesCell from "discourse/components/topic-list/header/replies-cell";
+import ItemViewsCell from "discourse/components/topic-list/item/views-cell";
+import HeaderViewsCell from "discourse/components/topic-list/header/views-cell";
+import LastReplyCell, {
+  LAST_REPLY_HEADER,
+} from "../components/last-reply-cell";
 
 export default {
   name: "discourse-list-modes",
 
-  initialize() {
+  initialize(container) {
+    // Set default body class before any component renders, preventing layout flash
+    document.body.classList.add("list-mode-regular");
+
     withPluginApi("0.8.31", (api) => {
-      api.modifyClass("controller:discovery/categories", {
+      api.modifyClass("model:topic", {
         pluginId: "discourse-list-modes",
+        thumbnails: null,
       });
 
-      api.onPageChange((url, title) => {
-        // Detect if we are in a category list
-        const categoryRoute = api.container.lookup("route:discovery.category");
-        if (categoryRoute && categoryRoute.isActive) {
-          const category = categoryRoute.modelFor("discovery.category").category;
-          this._applyListMode(api, category);
-        } else {
-          document.body.classList.remove("list-mode-thumbnails", "list-mode-gallery");
+      // Always produce standard XenForo-style columns.
+      // Visual differences between modes are handled entirely by CSS,
+      // so the cached column result is always correct and no router.refresh() is needed.
+      api.registerValueTransformer(
+        "topic-list-columns",
+        ({ value: columns }) => {
+          for (const [key] of columns.entries()) {
+            columns.delete(key);
+          }
+
+          columns.add("topic", {
+            item: ItemTopicCell,
+            header: HeaderTopicCell,
+          });
+
+          columns.add("last-reply", {
+            item: LastReplyCell,
+            header: LAST_REPLY_HEADER,
+            after: "topic",
+          });
+
+          columns.add("likes", {
+            item: ItemLikesCell,
+            header: HeaderLikesCell,
+            after: "last-reply",
+          });
+
+          columns.add("replies", {
+            item: ItemRepliesCell,
+            header: HeaderRepliesCell,
+            after: "likes",
+          });
+
+          columns.add("views", {
+            item: ItemViewsCell,
+            header: HeaderViewsCell,
+            after: "replies",
+          });
+
+          return columns;
         }
-      });
+      );
+
+      api.registerValueTransformer(
+        "topic-list-item-mobile-layout",
+        ({ value }) => {
+          if (
+            document.body.classList.contains("list-mode-regular") ||
+            document.body.classList.contains("list-mode-gallery")
+          ) {
+            return false;
+          }
+          return value;
+        }
+      );
     });
   },
-
-  _applyListMode(api, category) {
-    if (!category) return;
-
-    const currentUser = api.getCurrentUser();
-    const categoryId = category.id;
-    let mode = "regular";
-
-    // 1. Check user preference
-    const userModes = currentUser?.category_list_modes || {};
-    if (userModes[categoryId]) {
-      mode = userModes[categoryId];
-    } else {
-      // 2. Check site settings defaults
-      const thumbCats = (api.settings.list_modes_thumbnails_categories || "").split(",").map(id => id.trim());
-      const galleryCats = (api.settings.list_modes_gallery_categories || "").split(",").map(id => id.trim());
-
-      if (thumbCats.includes(categoryId.toString())) {
-        mode = "thumbnails";
-      } else if (galleryCats.includes(categoryId.toString())) {
-        mode = "gallery";
-      }
-    }
-
-    document.body.classList.remove("list-mode-thumbnails", "list-mode-gallery");
-    if (mode !== "regular") {
-      document.body.classList.add(`list-mode-${mode}`);
-    }
-  }
 };

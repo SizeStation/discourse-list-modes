@@ -1,0 +1,25 @@
+{{#if this.showImagesStrip}}
+  <div class="list-mode-images">
+    {{#each this.displayThumbnails as |thumb|}}
+      <div class="list-mode-images__item {{if thumb.isMore "list-mode-images__item--more"}}">
+        {{#if thumb.isMore}}
+          <span class="list-mode-images__more-label">{{thumb.label}}</span>
+        {{else}}
+          <img src={{thumb.url}} alt="" loading="lazy" />
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+{{#if this.showGalleryContent}}
+  <div class="gallery-content-wrap">
+    <div class="gallery-content-wrap__title">
+      <a href="{{this.topicUrl}}" class="gallery-content-wrap__link">{{this.topic.title}}</a>
+    </div>
+    <div class="gallery-content-wrap__extras">
+      <span class="gallery-content-wrap__avatar"><a href="{{this.posterUser.path}}" data-user-card="{{this.posterUser.username}}">{{avatar this.posterUser imageSize="tiny"}}</a></span>
+      <span class="gallery-content-wrap__likes">{{d-icon "heart"}} {{this.topic.like_count}}</span>
+      <span class="gallery-content-wrap__replies">{{d-icon "reply"}} {{this.topic.posts_count}}</span>
+    </div>
+  </div>
+{{/if}}
